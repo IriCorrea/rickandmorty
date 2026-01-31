@@ -1,0 +1,59 @@
+openapi: 3.0.3
+info:
+  title: Rick and Morty BFF
+  version: 1.0.0
+paths:
+  /personagens:
+    get:
+      summary: Listar personagens com paginação
+      operationId: listarPersonagens
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: Lista paginada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginaPersonagem'
+  /personagens/{nome}:
+    get:
+      summary: Buscar personagem por nome
+      operationId: buscarPorNome
+      parameters:
+        - name: nome
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Personagem encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonagemResponse'
+
+components:
+  schemas:
+    PaginaPersonagem:
+      type: object
+      properties:
+        page:
+          type: integer
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonagemResponse'
+    PersonagemResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string

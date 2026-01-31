@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: rickandmorty
+
+logging:
+  level:
+    org.springframework.cache: TRACE
+    com.api.rickandmorty: DEBUG
