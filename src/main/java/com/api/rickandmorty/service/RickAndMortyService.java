@@ -52,7 +52,7 @@ public class RickAndMortyService {
         return client.buscarPorNome(nome)
                 .map(CharacterListResponse::getResults)
                 .filter(results -> !results.isEmpty())
-                .map(results -> results.get(0))
+                .map(List::getFirst)
                 .map(firstMatch -> {
                     log.info("Personagem encontrado: ID={}, Nome={}", firstMatch.getId(), firstMatch.getName());
                     return mapper.toResponse(firstMatch);

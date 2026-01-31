@@ -2,7 +2,7 @@
 
 Este projeto é um **Backend for Frontend (BFF)** desenvolvido em Java com Spring Boot 3, que atua como um proxy inteligente para a API pública do Rick and Morty.
 
-O projeto segue uma abordagem **Design-First**, onde o código (interfaces e DTOs) é gerado a partir de um contrato OpenAPI (Swagger).
+O projeto segue uma abordagem **_Design-First_**, onde o código (interfaces e DTOs) é gerado a partir de um contrato OpenAPI (Swagger).
 
 ## 🚀 Tecnologias Utilizadas
 
@@ -10,13 +10,14 @@ O projeto segue uma abordagem **Design-First**, onde o código (interfaces e DTO
 *   **Spring Boot 3.2.2**
 *   **Maven**
 *   **OpenAPI Generator** (Scaffolding)
+*   **MapStruct** (Mapeamento de Objetos)
 *   **Lombok** (Boilerplate reduction)
-*   **Spring Cache** (Otimização)
-*   **JUnit 5 & Mockito** (Testes)
+*   **Spring Cache**
+*   **SpringDoc OpenAPI** (Documentação Viva)
 
 ## 📋 Pré-requisitos
 
-Antes de começar, certifique-se de ter instalado em sua máquina:
+Antes de começar, certifique-se de ter instalado na sua máquina:
 
 *   **Java JDK 21**
 *   **Maven 3.8+**
@@ -24,10 +25,10 @@ Antes de começar, certifique-se de ter instalado em sua máquina:
 
 ### ⚠️ Importante: Configuração da IDE
 
-Como este projeto utiliza **Lombok** e **Geração de Código**, você precisa:
+Como este projeto utiliza **Lombok**, **MapStruct** e **Geração de Código**, você precisa:
 
-1.  **Instalar o Plugin do Lombok**: Certifique-se de que sua IDE tenha o plugin do Lombok instalado e o processamento de anotações habilitado.
-2.  **Gerar os Fontes**: O projeto não compilará imediatamente ao ser aberto porque as classes da API (`PersonagensApi`, DTOs) são geradas em tempo de build.
+1.  **Instalar o Plugin do Lombok**: Certifique-se de que a IDE tenha o plugin do Lombok instalado e o processamento de anotações habilitado.
+2.  **Gerar as Fontes**: O projeto não compilará imediatamente ao ser aberto porque as classes da API (`PersonagensApi`, DTOs) são geradas em tempo de _build_.
 
 ## 🛠️ Instalação e Build
 
@@ -57,8 +58,12 @@ Localize a classe `com.api.rickandmorty.RickAndMortyApplication` e execute o mé
 
 A aplicação rodará por padrão na porta `8080`.
 
+### 📖 Documentação (Swagger UI)
+Acesse a interface visual para testar os endpoints:
+👉 **[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)**
+
 ### 1. Listar Personagens (Paginado)
-Retorna uma lista simplificada (apenas ID e Nome) com paginação.
+Retorna uma lista simplificada (apenas _ID_ e Nome) com paginação.
 
 *   **URL**: `GET /personagens`
 *   **Query Param**: `page` (Opcional, default: 1)
@@ -76,18 +81,11 @@ Busca um personagem específico pelo nome. Retorna o primeiro match encontrado.
     curl "http://localhost:8080/personagens/Rick"
     ```
 
-## 🧪 Testes
-
-Para executar os testes unitários e de integração:
-
-```bash
-mvn test
-```
-
 ## 🏗️ Arquitetura
 
 *   **Contract-First**: Definição da API em `src/main/resources/openapi/openapi.yaml`.
 *   **Controller**: Implementa a interface gerada pelo OpenAPI.
-*   **Service**: Contém a lógica de negócio, cache e transformação de dados.
+*   **Service**: Contém a lógica de negócio e orquestração.
+*   **Mapper**: Utiliza **MapStruct** para conversão performatica de objetos.
 *   **Client**: Utiliza `RestClient` para consumir a API externa do Rick and Morty.
 *   **Exception Handling**: Tratamento global de erros para garantir respostas HTTP adequadas.

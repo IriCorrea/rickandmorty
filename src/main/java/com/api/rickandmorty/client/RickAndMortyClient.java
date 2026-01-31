@@ -19,7 +19,6 @@ public class RickAndMortyClient {
     }
 
     public Optional<CharacterListResponse> listarPersonagens(Integer page) {
-        log.info("Chamando API externa para listar personagens. Página: {}", page);
         try {
             return Optional.ofNullable(restClient.get()
                     .uri(uriBuilder -> uriBuilder.path("/character").queryParam("page", page).build())
@@ -32,7 +31,6 @@ public class RickAndMortyClient {
     }
 
     public Optional<CharacterListResponse> buscarPorNome(String nome) {
-        log.info("Chamando API externa para buscar personagem por nome: {}", nome);
         try {
             return Optional.ofNullable(restClient.get()
                     .uri(uriBuilder -> uriBuilder.path("/character").queryParam("name", nome).build())

@@ -18,17 +18,14 @@ public class PersonagemController implements PersonagensApi {
 
     @Override
     public ResponseEntity<PaginaPersonagem> listarPersonagens(Integer page) {
-        log.info("Requisição recebida: GET /personagens?page={}", page);
         return ResponseEntity.ok(service.listarPersonagens(page));
     }
 
     @Override
     public ResponseEntity<PersonagemResponse> buscarPorNome(String nome) {
-        log.info("Requisição recebida: GET /personagens/{}", nome);
         try {
             return ResponseEntity.ok(service.buscarPorNome(nome));
         } catch (RuntimeException e) {
-            log.warn("Personagem não encontrado: {}", nome);
             return ResponseEntity.notFound().build();
         }
     }
