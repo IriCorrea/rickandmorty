@@ -3,6 +3,7 @@ package com.api.rickandmorty.service;
 import com.api.rickandmorty.client.RickAndMortyClient;
 import com.api.rickandmorty.client.response.CharacterListResponse;
 import com.api.rickandmorty.client.response.CharacterResponse;
+import com.api.rickandmorty.mapper.RickAndMortyMapper;
 import com.api.rickandmorty.model.PaginaPersonagem;
 import com.api.rickandmorty.model.PersonagemResponse;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -25,6 +27,9 @@ class RickAndMortyServiceTest {
 
     @Mock
     private RickAndMortyClient client;
+
+    @Mock
+    private RickAndMortyMapper mapper;
 
     @InjectMocks
     private RickAndMortyService service;
@@ -39,7 +44,12 @@ class RickAndMortyServiceTest {
         CharacterListResponse listResponse = new CharacterListResponse();
         listResponse.setResults(List.of(charResponse));
 
+        PersonagemResponse mappedResponse = new PersonagemResponse();
+        mappedResponse.setId(1);
+        mappedResponse.setNome("Rick Sanchez");
+
         when(client.listarPersonagens(anyInt())).thenReturn(Optional.of(listResponse));
+        when(mapper.toResponse(any(CharacterResponse.class))).thenReturn(mappedResponse);
 
         // Act
         PaginaPersonagem resultado = service.listarPersonagens(1);
@@ -74,7 +84,12 @@ class RickAndMortyServiceTest {
         CharacterListResponse listResponse = new CharacterListResponse();
         listResponse.setResults(List.of(charResponse));
 
+        PersonagemResponse mappedResponse = new PersonagemResponse();
+        mappedResponse.setId(1);
+        mappedResponse.setNome("Rick Sanchez");
+
         when(client.buscarPorNome(anyString())).thenReturn(Optional.of(listResponse));
+        when(mapper.toResponse(any(CharacterResponse.class))).thenReturn(mappedResponse);
 
         // Act
         PersonagemResponse resultado = service.buscarPorNome("Rick");
