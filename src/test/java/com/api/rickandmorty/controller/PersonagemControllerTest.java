@@ -1,17 +1,13 @@
 package com.api.rickandmorty.controller;
 
-import com.api.rickandmorty.model.PaginaPersonagem;
-import com.api.rickandmorty.model.PersonagemResponse;
 import com.api.rickandmorty.service.RickAndMortyService;
+import com.api.rickandmorty.util.TestMocks;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.Collections;
-import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -31,35 +27,24 @@ class PersonagemControllerTest {
 
     @Test
     void listarPersonagens_DeveRetornar200_QuandoSucesso() throws Exception {
-        PaginaPersonagem pagina = new PaginaPersonagem();
-        pagina.setPage(1);
-        PersonagemResponse p = new PersonagemResponse();
-        p.setId(1);
-        p.setNome("Rick");
-        pagina.setResults(List.of(p));
-
-        when(service.listarPersonagens(anyInt())).thenReturn(pagina);
+        when(service.listarPersonagens(anyInt())).thenReturn(TestMocks.criarPaginaPersonagem());
 
         mockMvc.perform(get("/personagens")
                         .param("page", "1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.page").value(1))
-                .andExpect(jsonPath("$.results[0].nome").value("Rick"));
+                .andExpect(jsonPath("$.results[0].nome").value(TestMocks.NOME_PADRAO));
     }
 
     @Test
     void buscarPorNome_DeveRetornar200_QuandoEncontrado() throws Exception {
-        PersonagemResponse p = new PersonagemResponse();
-        p.setId(1);
-        p.setNome("Rick");
-
-        when(service.buscarPorNome(anyString())).thenReturn(p);
+        when(service.buscarPorNome(anyString())).thenReturn(TestMocks.criarPersonagemResponse());
 
         mockMvc.perform(get("/personagens/Rick")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nome").value("Rick"));
+                .andExpect(jsonPath("$.nome").value(TestMocks.NOME_PADRAO));
     }
 
     @Test
